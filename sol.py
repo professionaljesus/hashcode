@@ -4,7 +4,8 @@ from tqdm import tqdm
 
 
 
-in_files = list("abcdef")
+in_files = list("bcdef")
+
 for ff in in_files:
     in_file = ff + ".txt"
     out = ""
@@ -41,7 +42,7 @@ for ff in in_files:
                 tot_tuples.append((B,E))
                 tot_L += duration[B,E]
         
-            if tot_L > D:
+            if tot_L > float(D):
                 continue
                 
             num_cars += 1
@@ -52,24 +53,24 @@ for ff in in_files:
         
         print(V,num_cars)
         
-        num_I = I
+        num_I = 0
         for i in tqdm(range(I)):
+           # total_flow[:,i] = np.power(total_flow[:,i],2)
             if np.sum(total_flow[:,i]) > 0:
                 norm = total_flow[:,i]/np.sum(total_flow[:,i])
             else:
                 norm = total_flow[:,i]
         
-            norm *= 2*np.count_nonzero(total_flow[:,i])
+            norm *= 3.1*np.count_nonzero(total_flow[:,i])
         
             best_starts = np.argsort(start_flow[:,i])
         
             best_starts = np.flip(best_starts)
             
-            times = (total_flow[:,i])
+            #times = (total_flow[:,i])
             times = np.ceil(norm)
             
             if np.count_nonzero(times) == 0:
-                num_I -= 1
                 continue 
 
             out += str(i) + "\n" + str(np.count_nonzero(times)) + "\n"
@@ -78,6 +79,7 @@ for ff in in_files:
                     continue
                 street_name = idx_to_street[b][i]
                 out += street_name + " " + str(int(times[b])) + "\n"
+            num_I += 1
         
         
         out = str(num_I) + "\n" + out
